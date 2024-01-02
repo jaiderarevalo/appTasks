@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "376287518419",
+    "project_id": "alarmas-54342",
+    "storage_bucket": "alarmas-54342.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:376287518419:android:064b05e787ee33c5e37e26",
+        "android_client_info": {
+          "package_name": "com.alarm.alarma"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtuOqffDF2gCKbqq6x_aP_Vgh5rCz7Cp4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

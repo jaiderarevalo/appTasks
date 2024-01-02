@@ -18,13 +18,21 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.alarm.alarma",
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
+        "googleServicesFile": "./google-services.json",
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "d31959ca-59b0-4d75-a284-f183550123d4"
+      }
     }
   }
 }
