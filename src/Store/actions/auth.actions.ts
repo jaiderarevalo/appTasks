@@ -7,8 +7,7 @@ import {
 import { Api } from "../../Services/Api";
 import { Alert } from "react-native";
 import { createAlarm } from "../../utils/message.utils";
-
-
+import { UpdateUser } from "../../Types/types";
 
 export const registerUser = createAsyncThunk(
   "auth/registerUser",
@@ -85,11 +84,32 @@ export const loginUser = createAsyncThunk(
         password: user.password,
       });
 
-      console.log("soy el reponse de login", response.data);
 
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data.message.email[0]);
+    }
+  }
+);
+export const updateUser = createAsyncThunk(
+  "tasks/updateUser",
+  async (task: UpdateUser, { rejectWithValue }) => {
+    try {
+      if (task.name === "" && task.newPassword === "" && task.password === "") {
+        const cancel = createAlarm({
+          message: "No pueden ir todos los Campos Vacios",
+          type: "danger",
+          duration: 4000,
+          Icons: "checkmark-outline",
+        });
+        cancel();
+      }
+      const res = await Api.patch(`/auth/updateUser`, task);
+     
+      return res.data;
+    } catch (error: any) {
+      console.log("error del catch", error.response.data);
+      return rejectWithValue(error.response.data.message);
     }
   }
 );

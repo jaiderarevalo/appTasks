@@ -22,7 +22,7 @@ export type TypePostData = {
 };
 
 export class Api {
-  static baseUrl = "http://192.168.11.101:3900/app";
+  static baseUrl = "http://192.168.11.103:3900/app";
   //////
   static async get<T>(
     url: string,

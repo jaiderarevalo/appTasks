@@ -4,10 +4,12 @@ import { handlePending } from "../../actions/base.action";
 import {
   loginUser,
   registerUser,
+  updateUser,
   validateEmail,
   validateToken,
 } from "../../actions/auth.actions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { UpdateUser } from "../../../Types/types";
 
 export interface UserLogin {
   email: string;
@@ -25,6 +27,7 @@ export interface UserRegister {
   confirmpassword: string;
 }
 export interface RegisterState {
+  updateOneUser: UpdateUser | null;
   user: User | null;
   loading: boolean;
   error: string | null;
@@ -34,6 +37,7 @@ export interface RegisterState {
   alreadyEmail: boolean;
 }
 const initialState: RegisterState = {
+  updateOneUser: null,
   user: null,
   loading: false,
   error: null,
@@ -106,6 +110,14 @@ const authSlice = createSlice({
         state.loading = false;
         state.isLogin = false;
         state.alreadyEmail = false;
+      })
+      .addCase(updateUser.pending, handlePending)
+      .addCase(updateUser.fulfilled, (state, { payload }: any) => {
+        state.updateOneUser = payload;
+      })
+
+      .addCase(updateUser.rejected, (state, { payload }) => {
+        state.loading = false;
       });
   },
 });

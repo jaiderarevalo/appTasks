@@ -39,6 +39,13 @@ export type RegisterType = {
   gender: string;
   confirmpassword: string;
 };
+
+export type UpdateUser = {
+  name?: string;
+  password?: string;
+  newPassword?: string;
+  confirmPassword: string;
+};
 export type LoginType = {
   email: string;
   password: string;
@@ -49,7 +56,7 @@ export type RootStackParams = {
   Register: undefined;
   Login: undefined;
   Task: undefined;
-  Account:undefined
+  Account: undefined;
 };
 export type PostNavigationProps = NativeStackNavigationProp<
   RootStackParams,

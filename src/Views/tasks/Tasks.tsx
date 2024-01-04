@@ -196,13 +196,6 @@ const Tasks = () => {
           </Button>
         </View>
         <View style={styles.logoutContainer}>
-          {/* <Button
-            onPress={() => handleLogout()}
-            buttonStyle={styles.buttonlogout}
-          >
-            Logout
-            <Icon name="logout" style={styles.icon} color={"white"} />
-          </Button> */}
           <ModalTask onClose={handleModalClose} />
         </View>
         <View></View>
