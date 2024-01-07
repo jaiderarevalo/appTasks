@@ -13,12 +13,13 @@ import { useSelector } from "react-redux";
 import { UserEmail } from "../../Store/Slice/reducer/auth.slice";
 import { debounce } from "lodash";
 import SelectPicker, { GenderList } from "../../components/select/Select";
+import Form from "../../components/form/Form";
 //import { Button } from "@rneui/themed";
 
 const initial = {
   name: "maria",
   email: "maria@gmail.com",
-  gender:'M',
+  gender: "M",
   password: "1234",
   confirmpassword: "1234",
 };
@@ -43,26 +44,31 @@ const Register = () => {
     useNavigation<StackNavigationProp<RootStackParams, "Home">>();
   const dispatch = useAppDispatch();
 
-  const onSubmit = async(data: RegisterType) => {
+  const onSubmit = async (data: RegisterType) => {
     try {
-    const res =  await dispatch(registerUser(data))
-    if(res && isRegister){
-      navigate("Login");
-      resetForm()
-    }
+      const res = await dispatch(registerUser(data));
+      if (res && isRegister) {
+        navigate("Login");
+        resetForm();
       }
-      
-     catch (error) {
+    } catch (error) {
       Alert.alert("Error", `${error}`);
     }
   };
-  const { values, handleChange, handleBlur, handleSubmit, resetForm, errors,setFieldValue } =
-    useFormik({
-      initialValues: initial,
-      enableReinitialize: true,
-      validationSchema: schemaValidateRegister,
-      onSubmit,
-    });
+  const {
+    values,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    resetForm,
+    errors,
+    setFieldValue,
+  } = useFormik({
+    initialValues: initial,
+    enableReinitialize: true,
+    validationSchema: schemaValidateRegister,
+    onSubmit,
+  });
 
   useEffect(() => {
     const validateEmailAsync = async (values: UserEmail) => {
@@ -85,62 +91,64 @@ const Register = () => {
     <View style={styles.container}>
       <Header />
       <View style={styles.containercenter}>
-        <Text style={styles.containerTitle}>Register</Text>
+        <Text style={styles.containerTitle}>Registro</Text>
         <View style={styles.form}>
           <View>
-            <Text>Name</Text>
-            <TextInput
-              style={styles.input}
-              autoFocus
+            <Form
               onChangeText={handleChange("name")}
               value={values.name}
-              onBlur={handleBlur("name")}
+              error={errors.name}
+              placeholder="pepito perez"
+              label="Nombre"
             />
             <Text>{errors.name && <Text>{errors.name}</Text>}</Text>
           </View>
           <View>
-            <Text>E-mail</Text>
-            <TextInput
-              style={styles.input}
+            <Form
               onChangeText={handleChange("email")}
               value={values.email}
-              onBlur={handleBlur("email")}
+              error={errors.email}
+              placeholder="example@gmail.com"
+              label="Correo"
             />
-            <Text>
-              {alreadyEmail && (
-                <Text style={styles.emailexist}>el correo ya existe</Text>
-              )}
-            </Text>
-            <Text>{errors.email && <Text>{errors.email}</Text>}</Text>
+            {alreadyEmail ? (
+              <Text>
+                {alreadyEmail && (
+                  <Text style={styles.emailexist}>El correo ya existe</Text>
+                )}
+              </Text>
+            ) : (
+              <Text>{errors.email && <Text>{errors.email}</Text>}</Text>
+            )}
           </View>
           <View>
             <Text>Gender</Text>
             <SelectPicker
-            key={'gender'}
-            items={GenderList}
-            onValueChange={(value) => setFieldValue("gender", value)}
-            value={values.gender}
+              key={"gender"}
+              items={GenderList}
+              onValueChange={(value) => setFieldValue("gender", value)}
+              value={values.gender}
             />
           </View>
           <View>
-            <Text>Password</Text>
-            <TextInput
-              style={styles.input}
+            <Form
               onChangeText={handleChange("password")}
               value={values.password}
-              onBlur={handleBlur("password")}
-              secureTextEntry
+              error={errors.password}
+              placeholder="*******"
+              label="Contraseña"
+              secureTextEntry={true}
             />
             <View>{errors.password && <Text>{errors.password}</Text>}</View>
           </View>
           <View>
-            <Text>Confirm password</Text>
-            <TextInput
-              style={styles.input}
+            <Form
               onChangeText={handleChange("confirmpassword")}
               value={values.confirmpassword}
-              onBlur={handleBlur("confirmpassword")}
-              secureTextEntry
+              error={errors.confirmpassword}
+              placeholder="***********"
+              label="Confirmacion contraseña"
+              secureTextEntry={true}
             />
             <View>
               {errors.confirmpassword && <Text>{errors.confirmpassword}</Text>}
