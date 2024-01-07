@@ -10,8 +10,9 @@ import { LoginType, RegisterType, RootStackParams } from "../../Types/types";
 import { RootState, useAppDispatch } from "../../Store/Slice";
 import { loginUser, registerUser } from "../../Store/actions/auth.actions";
 import { useSelector } from "react-redux";
-import { createAlarm } from "../../utils/message.utils";
-//import { Button } from "@rneui/themed";
+import { createAlarm } from "../../utils/CreateAlarm.utils";
+import Form from "../../components/form/Form";
+import ImageAvatar from "../../components/Image";
 
 const initial = {
   email: "maria@gmail.com",
@@ -41,18 +42,16 @@ const Login = () => {
 
         const cancel = createAlarm({
           message: `Hola ${user?.name} has ingresado Exitosamente`,
-          type: "sucess",
+          type: "success",
           duration: 4000,
-          Icons: "checkmark-outline",
         });
         cancel();
       }
-      if (res.meta.requestStatus === 'rejected') {
+      if (res.meta.requestStatus === "rejected") {
         const cancel = createAlarm({
           message: `Email o Contraseña invalida`,
           type: "danger",
           duration: 4000,
-          Icons: "checkmark-outline",
         });
         cancel();
         resetForm();
@@ -73,26 +72,28 @@ const Login = () => {
     <View style={styles.container}>
       <Header />
       <View style={styles.containercenter}>
-        <Text style={styles.containerTitle}>Login</Text>
+        <Text style={styles.containerTitle}>
+          <ImageAvatar size={90} avatarUrl={require("../../Images/book.png")} />
+        </Text>
         <View style={styles.form}>
           <View>
-            <Text>E-mail</Text>
-            <TextInput
-              style={styles.input}
+            <Form
               onChangeText={handleChange("email")}
               value={values.email}
-              onBlur={handleBlur("email")}
+              error={errors.email}
+              placeholder="example@gmail.com"
+              label="Correo"
             />
             <Text>{errors.email && <Text>{errors.email}</Text>}</Text>
           </View>
           <View>
-            <Text>Password</Text>
-            <TextInput
-              style={styles.input}
+            <Form
+              label="Contraseña"
               onChangeText={handleChange("password")}
               value={values.password}
-              onBlur={handleBlur("password")}
-              secureTextEntry
+              error={errors.password}
+              placeholder="**********"
+              secureTextEntry={true}
             />
             <View>{errors.password && <Text>{errors.password}</Text>}</View>
           </View>
@@ -134,15 +135,6 @@ const styles = StyleSheet.create({
     marginTop: 15,
     borderRadius: 20,
   },
-  input: {
-    backgroundColor: "#fff",
-    color: "#000",
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    fontSize: 15,
-    borderRadius: 20,
-    marginTop: 5,
-  },
   cuenta: {
     alignItems: "center",
     justifyContent: "center",
@@ -150,14 +142,11 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     fontSize: 18,
   },
-  form: { padding: 10 },
+  form: { width: "100%" },
   subtitle: { fontSize: 15, marginHorizontal: 10 },
   containerTitle: {
     textAlign: "center",
-    fontSize: 30,
-    fontWeight: "bold",
-    fontStyle: "italic",
-    paddingTop: 20,
+    paddingVertical: 20
   },
   containercenter: {
     borderRadius: 20,
@@ -165,6 +154,5 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "#C6E8F5",
   },
 });

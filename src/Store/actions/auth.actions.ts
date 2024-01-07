@@ -6,7 +6,7 @@ import {
 } from "../Slice/reducer/auth.slice";
 import { Api } from "../../Services/Api";
 import { Alert } from "react-native";
-import { createAlarm } from "../../utils/message.utils";
+import { createAlarm } from "../../utils/CreateAlarm.utils";
 import { UpdateUser } from "../../Types/types";
 
 export const registerUser = createAsyncThunk(
@@ -44,7 +44,6 @@ export const validateToken = createAsyncThunk(
             "Tu sesión ha caducado. Por favor, inicia sesión nuevamente.",
           type: "danger",
           duration: 4000,
-          Icons: "checkmark-outline",
         });
         cancel();
         // Manejar el error según tus necesidades
@@ -54,7 +53,6 @@ export const validateToken = createAsyncThunk(
           message: "Error de red. Por favor, inténtalo de nuevo.",
           type: "danger",
           duration: 4000,
-          Icons: "checkmark-outline",
         });
         cancel();
       } else {
@@ -64,7 +62,6 @@ export const validateToken = createAsyncThunk(
           message: "Error desconocido. Por favor, inténtalo de nuevo.",
           type: "danger",
           duration: 4000,
-          Icons: "checkmark-outline",
         });
         cancel();
       }
@@ -83,7 +80,6 @@ export const loginUser = createAsyncThunk(
         email: user.email,
         password: user.password,
       });
-
 
       return response.data;
     } catch (error: any) {
@@ -105,7 +101,7 @@ export const updateUser = createAsyncThunk(
         cancel();
       }
       const res = await Api.patch(`/auth/updateUser`, task);
-     
+
       return res.data;
     } catch (error: any) {
       console.log("error del catch", error.response.data);

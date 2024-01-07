@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import HeaderButton from "../HeaderButton";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../Store/Slice";
@@ -9,15 +9,17 @@ import Form from "../components/form/Form";
 import SelectPicker, { GenderList } from "../components/select/Select";
 import { RootStackParams, UpdateUser } from "../Types/types";
 import { updateUser } from "../Store/actions/auth.actions";
-import { createAlarm } from "../utils/message.utils";
+import { createAlarm } from "../utils/CreateAlarm.utils";
 import * as Yup from "yup";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
+import ImageAvatar from "../components/Image";
 
 const UserAccount = () => {
   const { user } = useSelector((root: RootState) => root.auth);
+
   const initialValues = {
-    name: user?.name,
+    name: user?.name || "",
     password: "",
     newPassword: "",
     confirmPassword: "",
@@ -33,19 +35,17 @@ const UserAccount = () => {
           message: "Las contraseñas no coinciden",
           type: "danger",
           duration: 4000,
-          Icons: "checkmark-outline",
         });
         cancel();
       }
 
       const res = await dispatch(updateUser(data));
-    
+
       if (res.payload === "No has cambiado ningun campo") {
         const cancel = createAlarm({
           message: "No has cambiado ningun campo",
           type: "danger",
           duration: 8000,
-          Icons: "checkmark-outline",
         });
         cancel();
       }
@@ -54,7 +54,6 @@ const UserAccount = () => {
           message: "Requerida nueva contraseña",
           type: "danger",
           duration: 8000,
-          Icons: "checkmark-outline",
         });
         cancel();
       }
@@ -63,7 +62,6 @@ const UserAccount = () => {
           message: "Contraseña actual Incorrecta",
           type: "danger",
           duration: 4000,
-          Icons: "checkmark-outline",
         });
         cancel();
         resetForm();
@@ -71,9 +69,8 @@ const UserAccount = () => {
       if (res.meta.requestStatus === "fulfilled") {
         const cancel = createAlarm({
           message: "Usuario Actualizado",
-          type: "sucess",
+          type: "success",
           duration: 4000,
-          Icons: "checkmark-outline",
         });
         navigate("Task");
         cancel();
@@ -89,6 +86,7 @@ const UserAccount = () => {
     handleSubmit,
     resetForm,
     errors,
+    handleChange,
   } = useFormik({
     initialValues,
     enableReinitialize: true,
@@ -99,79 +97,59 @@ const UserAccount = () => {
     <View>
       <HeaderButton />
       <View style={styles.container}>
-        <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-        >
-          <Text style={{ fontSize: 20, alignSelf: "center" }}>
-            Actualización de datos
-          </Text>
+        <View style={styles.image}>
+          <ImageAvatar avatarUrl={require("../Images/user.png")} size={80} />
         </View>
 
         <View style={styles.containerButton}>
-          <Text style={styles.title}>Nombre</Text>
           <Form
-            name="name"
-            textnames=""
-            onChange={(name, text) => setFieldValue(name, text)}
-            value={values.name as any}
-            placeholder="nombre"
+            label="Nombre"
+            onChangeText={handleChange("name")}
+            value={values.name}
             error={errors.name}
+            placeholder="Nombre"
           />
         </View>
-
         <View style={styles.containerButton}>
           <Text style={styles.title}>E-mail</Text>
-          <Text style={{ padding: 10, fontSize: 18 }}>{user?.email}</Text>
+          <Text style={styles.datas}>{user?.email}</Text>
         </View>
 
         <View style={styles.containerButton}>
           <Text style={styles.title}>Sexo</Text>
-          <Text style={{ padding: 10, fontSize: 18 }}>{user?.gender}</Text>
-        </View>
-        <View style={styles.containerButton}>
-          <Text style={styles.title}>Contraseña Actual</Text>
-          <Form
-            name="password"
-            textnames=""
-            onChange={(name, text) => setFieldValue(name, text)}
-            value={values.password}
-            placeholder="Contraseña Actual"
-          />
-          {errors && <Text>{errors.password}</Text>}
-        </View>
-        <View style={styles.containerButton}>
-          <Text style={styles.title}>Nueva Contraseña</Text>
-          <Form
-            name="newPassword"
-            textnames=""
-            onChange={(name, text) => setFieldValue(name, text)}
-            value={values.newPassword}
-            placeholder="Nueva contraseña"
-          />
-        </View>
-        <View style={styles.containerButton}>
-          <Text style={styles.title}>Confirmar Contraseña</Text>
-          <Form
-            name="confirmPassword"
-            textnames=""
-            onChange={(name, text) => setFieldValue(name, text)}
-            value={values.confirmPassword}
-            placeholder="confirmar contraseña"
-          />
+          <Text style={styles.datas}>{user?.gender}</Text>
         </View>
 
-        {/* name: string;
-  email: string;
-  password: string;
-  gender: string; */}
+        <View style={styles.containerButton}>
+          <Form
+            label="Contraseña actual"
+            onChangeText={handleChange("password")}
+            value={values.password}
+            placeholder="************"
+          />
+        </View>
+        <View style={styles.containerButton}>
+          <Form
+            onChangeText={handleChange("newPassword")}
+            value={values.newPassword}
+            placeholder="Nueva Contraseña"
+            label="Nueva contraseña"
+          />
+        </View>
+        <View style={styles.containerButton}>
+          <Form
+            onChangeText={handleChange("confirmPassword")}
+            value={values.confirmPassword}
+            placeholder="Confirmar Contraseña"
+            label="Confirmación contraseña"
+          />
+        </View>
       </View>
       <View style={{ paddingHorizontal: 20 }}>
         <Button
           buttonStyle={styles.boton}
           onPress={() => handleSubmit()}
           title="Actualizar"
-          disabledStyle={styles.disableButton}
-          disabledTitleStyle={styles.disabletitle}
         />
       </View>
     </View>
@@ -181,10 +159,11 @@ const UserAccount = () => {
 export default UserAccount;
 
 const styles = StyleSheet.create({
-  containerButton: { paddingHorizontal: 10, width: 580 },
+  datas:{ padding: 10, fontSize: 18 },
+  image: { alignItems: "center", paddingVertical: 15 },
+  containerButton: { paddingHorizontal: 10, paddingBottom:5 },
   container: {},
   boton: { paddingHorizontal: 20 },
   disableButton: { backgroundColor: "grey" },
-  disabletitle: {},
   title: { paddingHorizontal: 10 },
 });

@@ -14,10 +14,10 @@ import { useSelector } from "react-redux";
 import { tasksModel } from "../../Types/types";
 import moment from "moment";
 import * as Notifications from "expo-notifications";
-import ButtonActions from "../../components/Button/Button";
-import { createAlarm } from "../../utils/message.utils";
+import { createAlarm } from "../../utils/CreateAlarm.utils";
 import { isEditing, statusModal } from "../../Store/Slice/reducer/tasks.slice";
 import { formatearFecha, formatearHora } from "../../helper/helpers";
+import ButtonActions from "../../components/Button/ButtonActions";
 
 const Tasks = () => {
   const { tasks } = useSelector((root: RootState) => root.tasks);
@@ -66,9 +66,9 @@ const Tasks = () => {
   const handleLogout = () => {
     dispatch(setLogout());
   };
-  const handleModalClose = async (shouldUpdate?: boolean) => {
+  const handleModalClose = async () => {
     dispatch(statusModal(false));
-    await dispatch(getTasks(user.id as any));
+    await dispatch(getTasks(user?.id as any));
   };
   useEffect(() => {
     // Manejar la carga inicial y forzar la recarga manual si es necesario
@@ -120,8 +120,7 @@ const Tasks = () => {
       const cancel = createAlarm({
         message: "Tarea eliminada Exitosamente",
         type: "info",
-        duration: 4000,
-        Icons: "checkmark-outline",
+        duration: 4000
       });
       cancel();
     }
@@ -129,8 +128,7 @@ const Tasks = () => {
       const cancel = createAlarm({
         message: "No se ha podido  eliminar la tarea ",
         type: "danger",
-        duration: 4000,
-        Icons: "checkmark-outline",
+        duration: 4000
       });
       cancel();
     }
@@ -155,7 +153,7 @@ const Tasks = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View>
       <View
         style={{
           marginTop: 20,
@@ -328,7 +326,6 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   containerTask: { marginHorizontal: 20, marginVertical: 10 },
-  container: { flex: 1 },
   buttonContainer: {
     flexDirection: "row",
   },
@@ -347,7 +344,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     padding: 10,
   },
-  buttonlogout: { backgroundColor: "red", borderRadius: 20 },
   buttonCrear: { backgroundColor: "#007BFF", borderRadius: 20 },
   icon: { paddingHorizontal: 5 },
 });

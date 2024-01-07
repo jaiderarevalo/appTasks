@@ -2,9 +2,8 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 
 interface CreateAlarmParams {
   message: string;
-  type: any ;
+  type: "success" | "danger" | "warning" | "info";
   duration?: number;
-  Icons: string;
 }
 
 export const createAlarm = ({
@@ -15,6 +14,7 @@ export const createAlarm = ({
   showMessage({
     message,
     type,
+    icon: `${type}`,
   });
 
   const timeout = setTimeout(() => {

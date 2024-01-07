@@ -20,7 +20,7 @@ import SelectPicker, {
   categorias,
 } from "../../components/select/Select";
 import moment from "moment";
-import { createAlarm } from "../../utils/message.utils";
+import { createAlarm } from "../../utils/CreateAlarm.utils";
 import { Ionicons } from "@expo/vector-icons";
 import { Icon } from "native-base";
 import { useSelector } from "react-redux";
@@ -47,7 +47,7 @@ const ModalTask: FC<AddTasksModalProps> = ({ onClose }) => {
   const [fecha, setFecha] = useState(formatDate);
   const [hora, setHora] = useState(formatHour);
 
-  const { isVisible, isEdit, task,tasks } = useSelector(
+  const { isVisible, isEdit, task, tasks } = useSelector(
     (root: RootState) => root.tasks
   );
   const { user } = useSelector((root: RootState) => root.auth);
@@ -93,7 +93,6 @@ const ModalTask: FC<AddTasksModalProps> = ({ onClose }) => {
               message: "Tarea Actualizada",
               type: "success",
               duration: 4000,
-              Icons: "checkmark-outline",
             });
             cancel();
             onClose();
@@ -103,7 +102,6 @@ const ModalTask: FC<AddTasksModalProps> = ({ onClose }) => {
               message: "No se vieron cambios",
               type: "danger",
               duration: 4000,
-              Icons: "checkmark-outline",
             });
             cancel();
           }
@@ -113,7 +111,6 @@ const ModalTask: FC<AddTasksModalProps> = ({ onClose }) => {
               message: "No se ah podido actualizar",
               type: "danger",
               duration: 4000,
-              Icons: "checkmark-outline",
             });
             cancel();
           }
@@ -151,7 +148,6 @@ const ModalTask: FC<AddTasksModalProps> = ({ onClose }) => {
             message: "Su sesión ha espirado ",
             type: "info",
             duration: 4000,
-            Icons: "checkmark-outline",
           });
           cancel();
           onClose();
@@ -161,7 +157,6 @@ const ModalTask: FC<AddTasksModalProps> = ({ onClose }) => {
             message: "Alarma creada",
             type: "success",
             duration: 4000,
-            Icons: "checkmark-outline",
           });
           cancel();
           onClose();
@@ -199,13 +194,20 @@ const ModalTask: FC<AddTasksModalProps> = ({ onClose }) => {
       });
     }
   }, [isEdit, task]);
-  const { resetForm, setFieldValue, values, errors, handleSubmit, handleBlur } =
-    useFormik({
-      initialValues,
-      onSubmit,
-      validationSchema: isEdit ? "" : schemaValidate,
-      enableReinitialize: true,
-    });
+  const {
+    resetForm,
+    setFieldValue,
+    values,
+    errors,
+    handleChange,
+    handleSubmit,
+    handleBlur,
+  } = useFormik({
+    initialValues,
+    onSubmit,
+    validationSchema: isEdit ? "" : schemaValidate,
+    enableReinitialize: true,
+  });
 
   return (
     <Modal
@@ -233,19 +235,15 @@ const ModalTask: FC<AddTasksModalProps> = ({ onClose }) => {
         <View style={styles.containerForm}>
           <Text>Nombre</Text>
           <Form
-            name="name"
-            textnames=""
-            onChange={(name, text) => setFieldValue(name, text)}
+            onChangeText={handleChange("name")}
             value={values.name}
-            placeholder="nombre"
             error={errors.name}
+            placeholder="Nombre"
           />
           <Text>Descripción</Text>
           <Form
-            name="description"
-            onChange={(name, text) => setFieldValue(name, text)} // Utiliza handleChange correctamente
+            onChangeText={handleChange("description")}
             value={values.description}
-            textnames=""
             error={errors.description}
             placeholder="descripción"
           />
