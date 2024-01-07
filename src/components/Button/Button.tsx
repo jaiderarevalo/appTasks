@@ -15,6 +15,7 @@ interface MyComponentProps {
   children?: React.ReactNode;
   disable?: any;
   buttonColor?: string;
+  textColor?: string;
 }
 const ButtonR: React.FC<MyComponentProps> = ({
   icon,
@@ -25,17 +26,16 @@ const ButtonR: React.FC<MyComponentProps> = ({
   children,
   disable,
   buttonColor,
+  textColor,
 }) => (
-  
   <Button
     icon={icon}
     mode={mode}
     onPress={onPress}
-    style={{ borderRadius, justifyContent:'flex-end' }}
-    textColor="#000"
+    style={{ borderRadius}}
+    textColor={textColor}
     disabled={disable}
     buttonColor={buttonColor}
-    
   >
     {TextButton || children}
   </Button>

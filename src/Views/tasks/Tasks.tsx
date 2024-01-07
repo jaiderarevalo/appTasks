@@ -122,7 +122,7 @@ const Tasks = () => {
       const cancel = createAlarm({
         message: "Tarea eliminada Exitosamente",
         type: "info",
-        duration: 4000
+        duration: 4000,
       });
       cancel();
     }
@@ -130,7 +130,7 @@ const Tasks = () => {
       const cancel = createAlarm({
         message: "No se ha podido  eliminar la tarea ",
         type: "danger",
-        duration: 4000
+        duration: 4000,
       });
       cancel();
     }
@@ -184,18 +184,18 @@ const Tasks = () => {
       </View>
       <View style={styles.buttonContainer}>
         <View style={styles.crearContainer}>
-          
-          <Button
-            buttonStyle={styles.buttonCrear}
+          <ButtonR
             onPress={() => {
               dispatch(statusModal(true));
               dispatch(isEditing(false));
             }}
-          >
-            Crear Tarea
-            <Icon name="create" style={styles.icon} color={"white"} />
-          </Button>
-         
+            icon="pencil-plus"
+            TextButton="Crear Tarea"
+            borderRadius={100}
+            buttonColor="blue"
+            mode="contained"
+            textColor="#fff"
+          />
         </View>
         <View style={styles.logoutContainer}>
           <ModalTask onClose={handleModalClose} />
