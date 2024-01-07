@@ -126,6 +126,7 @@ const UserAccount = () => {
             onChangeText={handleChange("password")}
             value={values.password}
             placeholder="************"
+            secureTextEntry={true}
           />
         </View>
         <View style={styles.containerButton}>
@@ -134,6 +135,7 @@ const UserAccount = () => {
             value={values.newPassword}
             placeholder="Nueva Contraseña"
             label="Nueva contraseña"
+            secureTextEntry={true}
           />
         </View>
         <View style={styles.containerButton}>
@@ -142,6 +144,7 @@ const UserAccount = () => {
             value={values.confirmPassword}
             placeholder="Confirmar Contraseña"
             label="Confirmación contraseña"
+            secureTextEntry={true}
           />
         </View>
       </View>

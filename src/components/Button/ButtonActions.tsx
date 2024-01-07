@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
-import { Button, Icon } from "@rneui/themed";
+import React from "react";
+import IconButtonR from "./ButtonIcon";
 interface buttonInterface {
   isEdit?: boolean;
   onPress: any;
@@ -9,29 +9,11 @@ interface buttonInterface {
 const ButtonActions = ({ isEdit, onPress }: buttonInterface) => {
   return (
     <View>
-      <Button
-        icon={
-          isEdit ? (
-            <Icon
-              name="edit"
-              size={35}
-              borderRadius={15}
-              backgroundColor={"#ffd700"}
-              color={"white"}
-              
-            />
-          ) : (
-            <Icon
-              name="delete"
-              size={35}
-              borderRadius={15}
-              backgroundColor={"red"}
-              color={"white"}
-            />
-          )
-        }
-        type="clear"
+      <IconButtonR
+        icon={isEdit ? "book-edit" : "delete"}
         onPress={() => onPress()}
+        size={35}
+        color={isEdit ? "rgba(255, 215, 0, 1)" : "red"}
       />
     </View>
   );

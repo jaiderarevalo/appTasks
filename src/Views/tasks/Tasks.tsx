@@ -18,6 +18,8 @@ import { createAlarm } from "../../utils/CreateAlarm.utils";
 import { isEditing, statusModal } from "../../Store/Slice/reducer/tasks.slice";
 import { formatearFecha, formatearHora } from "../../helper/helpers";
 import ButtonActions from "../../components/Button/ButtonActions";
+import ButtonR from "../../components/Button/Button";
+import IconButtonR from "../../components/Button/ButtonIcon";
 
 const Tasks = () => {
   const { tasks } = useSelector((root: RootState) => root.tasks);
@@ -182,6 +184,7 @@ const Tasks = () => {
       </View>
       <View style={styles.buttonContainer}>
         <View style={styles.crearContainer}>
+          
           <Button
             buttonStyle={styles.buttonCrear}
             onPress={() => {
@@ -192,6 +195,7 @@ const Tasks = () => {
             Crear Tarea
             <Icon name="create" style={styles.icon} color={"white"} />
           </Button>
+         
         </View>
         <View style={styles.logoutContainer}>
           <ModalTask onClose={handleModalClose} />
