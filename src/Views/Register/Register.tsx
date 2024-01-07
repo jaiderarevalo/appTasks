@@ -14,6 +14,7 @@ import { UserEmail } from "../../Store/Slice/reducer/auth.slice";
 import { debounce } from "lodash";
 import SelectPicker, { GenderList } from "../../components/select/Select";
 import Form from "../../components/form/Form";
+import ButtonR from "../../components/Button/Button";
 //import { Button } from "@rneui/themed";
 
 const initial = {
@@ -156,18 +157,19 @@ const Register = () => {
           </View>
         </View>
         <View style={styles.containerboton}>
-          <Button
-            buttonStyle={styles.boton}
+          <ButtonR
             onPress={() => handleSubmit()}
-            title="Enviar"
-            disabled={
+            TextButton="Enviar"
+            icon="send"
+            mode="contained"
+            disable={
               values.name.trim() === "" ||
               values.confirmpassword.trim() === "" ||
               values.email.trim() === "" ||
-              values.password.trim() === ""
+              values.password.trim() === "" ||
+              values.password.length < 4 ||
+              alreadyEmail === true
             }
-            disabledStyle={styles.disableButton}
-            disabledTitleStyle={styles.disabletitle}
           />
         </View>
         <View>
@@ -186,10 +188,14 @@ const Register = () => {
 export default Register;
 
 const styles = StyleSheet.create({
-  emailexist: { color: "black" },
+  emailexist: { color: "red" },
   disableButton: { backgroundColor: "gray" },
   disabletitle: { color: "#000" },
-  containerboton: { alignContent: "center", justifyContent: "center" },
+  containerboton: {
+    alignContent: "center",
+    justifyContent: "center",
+    paddingHorizontal: 20,
+  },
   boton: {
     marginHorizontal: 50,
     backgroundColor: "#4CAF50",

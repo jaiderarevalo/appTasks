@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { createAlarm } from "../../utils/CreateAlarm.utils";
 import Form from "../../components/form/Form";
 import ImageAvatar from "../../components/Image";
+import ButtonR from "../../components/Button/Button";
 
 const initial = {
   email: "maria@gmail.com",
@@ -99,16 +100,13 @@ const Login = () => {
           </View>
         </View>
         <View style={styles.containerboton}>
-          <Button
-            buttonStyle={styles.boton}
+          <ButtonR 
             onPress={() => handleSubmit()}
-            title="Enviar"
-            disabled={
-              values.email.trim() === "" || values.password.trim() === ""
-            }
-            disabledStyle={styles.disableButton}
-            disabledTitleStyle={styles.disabletitle}
-          />
+            TextButton="Enviar"
+            icon="send"
+            mode="contained"
+            disable={ values.email.trim() === "" || values.password.trim() === "" || values.password.length < 4}
+            />
         </View>
         <View>
           <Text style={styles.cuenta}>
