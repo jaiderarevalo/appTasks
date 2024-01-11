@@ -1,4 +1,3 @@
-import { background } from 'native-base/lib/typescript/theme/styled-system';
 import * as React from 'react';
 import { IconButton } from 'react-native-paper';
 

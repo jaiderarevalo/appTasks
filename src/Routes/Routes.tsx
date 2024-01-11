@@ -58,7 +58,7 @@ const Routes = () => {
               component={TabNavigator}
               options={{ headerShown: false }}
             />
-            <Stack.Screen
+           <Stack.Screen
               name="Account"
               component={UserAccount}
               options={{ headerShown: false }}

@@ -8,6 +8,7 @@ import {
   updateOneTask,
 } from "../../actions/tasks.action";
 import { taskUpdateModel, tasksModel } from "../../../Types/types";
+import { boolean } from "yup";
 
 export interface tasksdatas {
   name: string;
@@ -38,6 +39,7 @@ export interface RegisterState {
   isEdit: boolean;
   error: string | null;
   token: string | null;
+  isDark: boolean
 }
 
 const initialState: RegisterState = {
@@ -49,6 +51,7 @@ const initialState: RegisterState = {
   isVisible: false,
   error: null,
   token: null,
+  isDark: false,
 };
 const tasksSlice = createSlice({
   name: "tasks",
@@ -60,6 +63,10 @@ const tasksSlice = createSlice({
     // Agrega un creador de acción para ocultar el modal
     isEditing: (state, action) => {
       state.isEdit = action.payload;
+    },
+    isThemeDark: (state, action) => {
+      state.isDark = action.payload;
+      console.log("soy el action",action.payload);
     },
   },
   extraReducers: (builder) => {
@@ -116,5 +123,5 @@ const tasksSlice = createSlice({
   },
 });
 
-export const { statusModal, isEditing } = tasksSlice.actions;
+export const { statusModal, isEditing,isThemeDark } = tasksSlice.actions;
 export default tasksSlice.reducer;

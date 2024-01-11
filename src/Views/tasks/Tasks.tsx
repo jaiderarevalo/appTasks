@@ -1,4 +1,10 @@
-import { Text, View, StyleSheet, ScrollView } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  ScrollView,
+  useColorScheme,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { RootState, useAppDispatch } from "../../Store/Slice";
 import { setLogout } from "../../Store/Slice/reducer/auth.slice";
@@ -15,14 +21,19 @@ import { tasksModel } from "../../Types/types";
 import moment from "moment";
 import * as Notifications from "expo-notifications";
 import { createAlarm } from "../../utils/CreateAlarm.utils";
-import { isEditing, statusModal } from "../../Store/Slice/reducer/tasks.slice";
+import {
+  isEditing,
+  isThemeDark,
+  statusModal,
+} from "../../Store/Slice/reducer/tasks.slice";
 import { formatearFecha, formatearHora } from "../../helper/helpers";
 import ButtonActions from "../../components/Button/ButtonActions";
 import ButtonR from "../../components/Button/Button";
 import IconButtonR from "../../components/Button/ButtonIcon";
+import { useTheme } from "react-native-paper";
 
 const Tasks = () => {
-  const { tasks } = useSelector((root: RootState) => root.tasks);
+  const { tasks, isDark } = useSelector((root: RootState) => root.tasks);
   const { user } = useSelector((root: RootState) => root.auth);
 
   const [cargando, setCargando] = useState(false);
@@ -64,10 +75,6 @@ const Tasks = () => {
       });
     };
   }, [tasksDatas]);
-
-  const handleLogout = () => {
-    dispatch(setLogout());
-  };
   const handleModalClose = async () => {
     dispatch(statusModal(false));
     await dispatch(getTasks(user?.id as any));
@@ -141,7 +148,16 @@ const Tasks = () => {
     dispatch(statusModal(true));
     dispatch(isEditing(true));
   };
-
+  ////////////////////////////
+  let colorScheme = useColorScheme();
+  useEffect(() => {
+    dispatch(isThemeDark(isDark));
+  }, [colorScheme]);
+  console.log(isDark);
+  const handleChangeTogle = () => {
+    dispatch(isThemeDark(!isDark));
+  };
+  ////////////////////////////
   const handleSubmit = async (id: any, status: boolean) => {
     try {
       const datas = { id, status: status };
@@ -153,9 +169,9 @@ const Tasks = () => {
       console.log("el error es", error);
     }
   };
-
+  const ThemeColor = useTheme();
   return (
-    <View>
+    <View style={{ backgroundColor: ThemeColor.colors.background }}>
       <View
         style={{
           marginTop: 20,
@@ -166,9 +182,13 @@ const Tasks = () => {
       >
         <Text style={{ fontSize: 20 }}>
           {user?.gender === "M" ? (
-            <Text>Hola Bienvenido:</Text>
+            <Text style={{ color: ThemeColor.colors.error }}>
+              Hola Bienvenido:
+            </Text>
           ) : (
-            <Text>Hola Bienvenida:</Text>
+            <Text style={{ color: ThemeColor.colors.primary }}>
+              Hola Bienvenida:
+            </Text>
           )}
         </Text>
         <Text
@@ -184,27 +204,51 @@ const Tasks = () => {
       </View>
       <View style={styles.buttonContainer}>
         <View style={styles.crearContainer}>
-          <ButtonR
-            onPress={() => {
-              dispatch(statusModal(true));
-              dispatch(isEditing(false));
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "flex-start",
+              height: "auto",
             }}
-            icon="pencil-plus"
-            TextButton="Crear Tarea"
-            borderRadius={100}
-            buttonColor="blue"
-            mode="contained"
-            textColor="#fff"
-          />
+          >
+            <ButtonR
+              onPress={() => {
+                dispatch(statusModal(true));
+                dispatch(isEditing(false));
+              }}
+              icon="pencil-plus"
+              TextButton="Crear Tarea"
+              borderRadius={100}
+              buttonColor={isDark ? ThemeColor.colors.onSecondary :'blue'}
+              mode="contained"
+              textColor='#fff'
+            />
+          </View>
+          <View style={{ alignItems: "flex-end", flex: 1 }}>
+            <IconButtonR
+              onPress={handleChangeTogle}
+              size={30}
+              color={isDark ? "white" : "black"}
+              icon={isDark ? "weather-sunny" : "weather-night"}
+            />
+          </View>
         </View>
         <View style={styles.logoutContainer}>
           <ModalTask onClose={handleModalClose} />
         </View>
-        <View></View>
       </View>
       <ScrollView>
         <View style={{ flex: 1, alignItems: "center" }}>
-          <Text style={{ fontSize: 20, fontWeight: "bold" }}>Tus Tareas</Text>
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: "bold",
+              color: ThemeColor.colors.primary,
+            }}
+          >
+            Tus Tareas
+          </Text>
         </View>
         <View>
           {tasksDatas && tasksDatas.length === 0 && (
@@ -227,8 +271,8 @@ const Tasks = () => {
                 >
                   <View style={styles.nameStatus}>
                     <View>
-                      <Text style={styles.title}>Nombre</Text>
-                      <Text>{task.name}</Text>
+                      <Text style={{fontSize: 15, fontWeight: "bold",color:ThemeColor.colors.primary}}>Nombre</Text>
+                      <Text style={{color: ThemeColor.colors.secondary}}>{task.name}</Text>
                     </View>
                     <View></View>
                     <View style={styles.status}>
@@ -250,28 +294,28 @@ const Tasks = () => {
                     </View>
                   </View>
                   <View>
-                    <Text style={styles.title}>Descripción</Text>
-                    <Text>{task.description}</Text>
+                    <Text style={{fontSize: 15, fontWeight: "bold",color:ThemeColor.colors.primary}}>Descripción</Text>
+                    <Text  style={{color: ThemeColor.colors.secondary}}>{task.description}</Text>
                   </View>
                   <View>
-                    <Text style={styles.title}>Prioridad</Text>
-                    <Text>{task.priority.toUpperCase()}</Text>
+                    <Text style={{fontSize: 15, fontWeight: "bold",color:ThemeColor.colors.primary}}>Prioridad</Text>
+                    <Text style={{color: ThemeColor.colors.secondary}}>{task.priority.toUpperCase()}</Text>
                   </View>
                   <View>
-                    <Text style={styles.title}>Categoria</Text>
-                    <Text>{task.category.toUpperCase()}</Text>
+                    <Text style={{fontSize: 15, fontWeight: "bold",color:ThemeColor.colors.primary}}>Categoria</Text>
+                    <Text style={{color: ThemeColor.colors.secondary}}>{task.category.toUpperCase()}</Text>
                   </View>
                   <View>
-                    <Text style={styles.title}>Fecha</Text>
-                    <Text>
+                    <Text style={{fontSize: 15, fontWeight: "bold",color:ThemeColor.colors.primary}}>Fecha</Text>
+                    <Text style={{color: ThemeColor.colors.secondary}}>
                       {formatearFecha(task.dateTimeReminder.toUpperCase())}
                     </Text>
                   </View>
                   <View style={{ flexDirection: "row" }}>
                     <View>
                       <View>
-                        <Text style={styles.title}>Hora</Text>
-                        <Text>{formatearHora(task.time.toUpperCase())}</Text>
+                        <Text style={{fontSize: 15, fontWeight: "bold",color:ThemeColor.colors.primary}}>Hora</Text>
+                        <Text style={{color: ThemeColor.colors.secondary}}>{formatearHora(task.time.toUpperCase())}</Text>
                       </View>
                     </View>
                     {selectedTaskId === task.id && (
@@ -317,7 +361,7 @@ const Tasks = () => {
 };
 
 const styles = StyleSheet.create({
-  title: { fontSize: 15, fontWeight: "bold" },
+  title: {   },
   status: { flex: 1, alignItems: "flex-end" },
   nameStatus: { flexDirection: "row" },
   oneTask: {
@@ -330,12 +374,9 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   containerTask: { marginHorizontal: 20, marginVertical: 10 },
-  buttonContainer: {
-    flexDirection: "row",
-  },
+  buttonContainer: {},
   crearContainer: {
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
+    flexDirection: "row",
     marginRight: 10,
     marginBottom: 10,
     padding: 10,

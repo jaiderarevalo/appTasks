@@ -1,19 +1,24 @@
-import { StyleSheet, View, Alert, TextInput, Text } from "react-native";
+import { StyleSheet, View, Alert, Text, useColorScheme } from "react-native";
 import { Button } from "@rneui/themed";
 import { StackNavigationProp } from "@react-navigation/stack";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigation } from "@react-navigation/native";
 import Header from "../../HeaderButton/Header";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { LoginType, RegisterType, RootStackParams } from "../../Types/types";
+import { LoginType, RootStackParams } from "../../Types/types";
 import { RootState, useAppDispatch } from "../../Store/Slice";
-import { loginUser, registerUser } from "../../Store/actions/auth.actions";
+import { loginUser } from "../../Store/actions/auth.actions";
 import { useSelector } from "react-redux";
 import { createAlarm } from "../../utils/CreateAlarm.utils";
 import Form from "../../components/form/Form";
 import ImageAvatar from "../../components/Image";
 import ButtonR from "../../components/Button/Button";
+import { useTheme } from "react-native-paper";
+import { isThemeDark } from "../../Store/Slice/reducer/tasks.slice";
+import ToggleDark from "../../components/Toggle";
+import { themeDarkDefault, themelight } from "../../../App";
+import IconButtonR from "../../components/Button/ButtonIcon";
 
 const initial = {
   email: "maria@gmail.com",
@@ -28,10 +33,21 @@ const schemaValidateRegister = Yup.object({
 
 const Login = () => {
   const { isLogin, user } = useSelector((root: RootState) => root.auth);
+
+  const { isDark } = useSelector((root: RootState) => root.tasks);
   const { navigate } =
     useNavigation<StackNavigationProp<RootStackParams, "Home">>();
   const dispatch = useAppDispatch();
-
+  ////////////////////////////////////////////////////
+  let colorScheme = useColorScheme();
+  useEffect(() => {
+    dispatch(isThemeDark(isDark));
+  }, [colorScheme]);
+  console.log(isDark);
+  const handleChangeTogle = () => {
+    dispatch(isThemeDark(!isDark));
+  };
+  /////////////////////////////////////////////////////
   const onSubmit = async (data: LoginType) => {
     try {
       const res = await dispatch(loginUser(data));
@@ -68,10 +84,17 @@ const Login = () => {
       validationSchema: schemaValidateRegister,
       onSubmit,
     });
+  const ThemeColor = useTheme();
 
   return (
-    <View style={styles.container}>
+    <View style={{ backgroundColor: ThemeColor.colors.primary, flex: 1 }}>
       <Header />
+      <IconButtonR
+        onPress={handleChangeTogle}
+        size={40}
+        color={isDark ? "white" : "black"}
+        icon={isDark ?"weather-sunny":"weather-night"}
+      />
       <View style={styles.containercenter}>
         <Text style={styles.containerTitle}>
           <ImageAvatar size={90} avatarUrl={require("../../Images/book.png")} />
@@ -100,13 +123,17 @@ const Login = () => {
           </View>
         </View>
         <View style={styles.containerboton}>
-          <ButtonR 
+          <ButtonR
             onPress={() => handleSubmit()}
             TextButton="Enviar"
             icon="send"
             mode="contained"
-            disable={ values.email.trim() === "" || values.password.trim() === "" || values.password.length < 4}
-            />
+            disable={
+              values.email.trim() === "" ||
+              values.password.trim() === "" ||
+              values.password.length < 4
+            }
+          />
         </View>
         <View>
           <Text style={styles.cuenta}>
@@ -144,7 +171,7 @@ const styles = StyleSheet.create({
   subtitle: { fontSize: 15, marginHorizontal: 10 },
   containerTitle: {
     textAlign: "center",
-    paddingVertical: 20
+    paddingVertical: 20,
   },
   containercenter: {
     borderRadius: 20,
