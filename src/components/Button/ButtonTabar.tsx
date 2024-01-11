@@ -9,6 +9,7 @@ import HeaderButton from "../../HeaderButton";
 import ButtonR from "./Button";
 import IconButtonR from "./ButtonIcon";
 import CardButton from "./CardButton";
+import { useTheme } from "react-native-paper";
 
 const Config = () => {
   const { navigate } =
@@ -17,8 +18,10 @@ const Config = () => {
   const handleLogout = () => {
     dispatch(setLogout());
   };
+ 
+  const ThemeColor = useTheme();
   return (
-    <View style={styles.container}>
+    <View style={{backgroundColor: ThemeColor.colors.background, flex:1 }}>
       <View style={{ flexDirection: "row" }}>
         <View>
           <HeaderButton />
