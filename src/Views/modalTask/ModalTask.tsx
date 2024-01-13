@@ -26,6 +26,7 @@ import { Icon } from "native-base";
 import { useSelector } from "react-redux";
 import { statusModal, updateTask } from "../../Store/Slice/reducer/tasks.slice";
 import { formatDate, formatHour } from "../../helper/helpers";
+import { useTheme } from "react-native-paper";
 
 const initialValues = {
   name: "",
@@ -208,7 +209,7 @@ const ModalTask: FC<AddTasksModalProps> = ({ onClose }) => {
     validationSchema: isEdit ? "" : schemaValidate,
     enableReinitialize: true,
   });
-
+  const theme = useTheme();
   return (
     <Modal
       visible={isVisible}
@@ -216,14 +217,14 @@ const ModalTask: FC<AddTasksModalProps> = ({ onClose }) => {
       transparent
       animationType="slide"
     >
-      <View style={styles.container}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Button
           icon={
             <Icon
               as={Ionicons}
               name="close-circle-outline"
               size="4xl"
-              color={"#fff"}
+              color={theme.colors.primary}
             />
           }
           onPress={() => {
@@ -232,7 +233,18 @@ const ModalTask: FC<AddTasksModalProps> = ({ onClose }) => {
           }}
           type="clear"
         />
-        <View style={styles.containerForm}>
+        <View
+          style={{
+            backgroundColor: theme.colors.onBackground,
+            width: "90%",
+            borderRadius: 24,
+            padding: 18,
+            shadowColor: "#000",
+            shadowOpacity: 0.25,
+            shadowRadius: 4,
+            elevation: 5,
+          }}
+        >
           <Text>Nombre</Text>
           <Form
             onChangeText={handleChange("name")}
@@ -360,24 +372,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginBottom: 15,
   },
-  containerForm: {
-    width: "90%",
-    backgroundColor: "#fff",
-    borderRadius: 24,
-    padding: 18,
-    shadowColor: "#000",
-    textShadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.5)",
-  },
+  containerForm: {},
+  container: {},
 });

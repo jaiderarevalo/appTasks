@@ -17,7 +17,12 @@ import ThemeProvider from "./src/Theme/ThemeProvider";
 
 export const themelight = {
   ...DefaultTheme,
-  colors: lightColor.colors,
+  colors: {
+    ...DefaultTheme.colors,
+    background:'#fff',
+    primary:'#000',
+    secondary:'rgba(140, 140, 140, 1)',
+  }
 };
 export const themeDarkDefault = {
   ...DarkTheme,
@@ -27,16 +32,13 @@ export const themeDarkDefault = {
     darkColor,
     background:'#262626',
     primary:'#fff', //titulos
-    secondary:'RGBA(230, 230, 230, 1)', // subtitulos
-  //  onSecondary:'RGBA(0, 0, 100, 1)'// botones
+    secondary:'rgba(230, 230, 200, 1)', // subtitulos
+    onSecondary:'rgba(100, 149, 237, 1) '// botones
 
 }
   };
 
 export default function App() {
- // const colorScheme = useColorScheme();
- // const theme = colorScheme === "light" ? themelight : themeDarkDefault;
- // console.log("putos",theme);
   
   const [states, setStates] = useState(false);
 useEffect(()=>{

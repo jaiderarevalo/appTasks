@@ -1,14 +1,17 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import RNPickerSelect from 'react-native-picker-select';
+import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import RNPickerSelect from "react-native-picker-select";
+import { useSelector } from "react-redux";
+import { RootState } from "../../Store/Slice";
+import { useTheme } from "react-native-paper";
 
 export interface DateTimePickerProps {
   mode?: "date" | "time" | "datetime" | "countdown" | undefined;
 }
-export const GenderList =[
-  {label:"M",value:"m"},
-  {label:"F",value:"f"}
-]
+export const GenderList = [
+  { label: "M", value: "m" },
+  { label: "F", value: "f" },
+];
 export const PriorityList = [
   { label: "Bajo", value: "bajo" },
   { label: "Medio", value: "medio" },
@@ -17,49 +20,54 @@ export const PriorityList = [
 
 export const categorias = [
   {
-    label: 'Trabajo',
-    value: 'trabajo'
+    label: "Trabajo",
+    value: "trabajo",
   },
   {
-    label: 'Estudio', 
-    value: 'estudio'
+    label: "Estudio",
+    value: "estudio",
   },
   {
-    label: 'Ejercicio',
-    value: 'ejercicio'
+    label: "Ejercicio",
+    value: "ejercicio",
   },
   {
-    label: 'Cita',
-    value: 'cita' 
+    label: "Cita",
+    value: "cita",
   },
   {
-    label: 'Entretenimiento',
-    value: 'entretenimiento'
-  }
-]
-
+    label: "Entretenimiento",
+    value: "entretenimiento",
+  },
+];
 
 interface SelectPickerProps {
-  items: Array<{ label: string, value: string }>;
+  items: Array<{ label: string; value: string }>;
   value: string;
-  onValueChange: (value: string) => void; 
+  onValueChange: (value: string) => void;
 }
 
-const SelectPicker: React.FC<SelectPickerProps> = ({ items, value, onValueChange }) => {
+const SelectPicker: React.FC<SelectPickerProps> = ({
+  items,
+  value,
+  onValueChange,
+}) => {
+  const { isDark } = useSelector((root: RootState) => root.tasks);
+  const theme = useTheme();
   return (
-    <View style={styles.pickerContainer} >
+    <View style={{ width: "auto", marginVertical: 10 }}>
       <RNPickerSelect
-        onValueChange={(value)=>onValueChange(value)}
+      textInputProps={{selectionColor:theme.colors.primary}}
+        onValueChange={(value) => onValueChange(value)}
         items={items}
-        value={value || ''}
-        placeholder={{}}
-        />
+        value={value || ""}
+      />
     </View>
-  )
-}
+  );
+};
 
-export default SelectPicker
+export default SelectPicker;
 
 const styles = StyleSheet.create({
-  pickerContainer:{ fontSize:15,width:'auto',marginVertical:10}
-})
+  pickerContainer: {},
+});
