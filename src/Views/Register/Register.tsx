@@ -15,6 +15,7 @@ import { debounce } from "lodash";
 import SelectPicker, { GenderList } from "../../components/select/Select";
 import Form from "../../components/form/Form";
 import ButtonR from "../../components/Button/Button";
+import { useTheme } from "react-native-paper";
 //import { Button } from "@rneui/themed";
 
 const initial = {
@@ -88,11 +89,23 @@ const Register = () => {
 
     validateEmailAsync(values);
   }, [dispatch, values]);
+  const theme = useTheme();
   return (
-    <View style={styles.container}>
+    <View style={{ backgroundColor: theme.colors.background, flex: 1 }}>
       <Header />
       <View style={styles.containercenter}>
-        <Text style={styles.containerTitle}>Registro</Text>
+        <Text
+          style={{
+            textAlign: "center",
+            fontSize: 30,
+            fontWeight: "bold",
+            fontStyle: "italic",
+            paddingTop: 20,
+            color:theme.colors.primary
+          }}
+        >
+          Registro
+        </Text>
         <View style={styles.form}>
           <View>
             <Form
@@ -123,7 +136,7 @@ const Register = () => {
             )}
           </View>
           <View>
-            <Text>Gender</Text>
+            <Text style={{color:theme.colors.primary}} >Gender</Text>
             <SelectPicker
               key={"gender"}
               items={GenderList}
@@ -173,7 +186,16 @@ const Register = () => {
           />
         </View>
         <View>
-          <Text style={styles.cuenta}>
+          <Text
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              textAlign: "center",
+              marginVertical: 20,
+              fontSize: 18,
+              color: theme.colors.primary,
+            }}
+          >
             ¿ Ya tienes cuenta ?{" "}
             <Link style={{ color: "purple" }} to={"/Login"}>
               Click Aqui
@@ -211,22 +233,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginTop: 5,
   },
-  cuenta: {
-    alignItems: "center",
-    justifyContent: "center",
-    textAlign: "center",
-    marginVertical: 20,
-    fontSize: 18,
-  },
+  cuenta: {},
   form: { padding: 10 },
   subtitle: { fontSize: 15, marginHorizontal: 10 },
-  containerTitle: {
-    textAlign: "center",
-    fontSize: 30,
-    fontWeight: "bold",
-    fontStyle: "italic",
-    paddingTop: 20,
-  },
+  containerTitle: {},
   containercenter: {
     borderRadius: 20,
     marginHorizontal: 20,

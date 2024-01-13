@@ -9,44 +9,57 @@ import Home from "../Views/Home";
 import Register from "../Views/Register";
 import Login from "../Views/Login";
 import Tasks from "../Views/tasks/Tasks";
-import ButtonTabar from "../components/Button/ButtonTabar";
 import { Icon } from "@rneui/themed";
 import Config from "../components/Button/ButtonTabar";
 import UserAccount from "../configs/UserAccount";
+import { useTheme } from "react-native-paper";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+const TabNavigator = () => {
+  
+  const { isDark } = useSelector((root: RootState) => root.tasks);
+  const theme = useTheme();
+  return (
+    <Tab.Navigator 
+    tabBarOptions={{
+      activeTintColor: isDark ?'blue':'',
+      inactiveTintColor: 'gray',
+      style: {
+        backgroundColor:'',
+      },
+    }}
+  >
+      <Tab.Screen
+        name="Task"
+        component={Tasks}
+        options={{
+          tabBarStyle:{backgroundColor:'#ccc'},
+          tabBarLabel: "Tareas",
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="create" color={color} size={size} />
+          ),
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        name="Config"
+        component={Config}
+        options={{
+          tabBarLabel: "Configuración",
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="cog" type="font-awesome" color={color} size={size} />
+          ),
+          headerShown: false,
+        }}
+      />
+    </Tab.Navigator>
+  );
+};
 
-const TabNavigator = () => (
-  <Tab.Navigator>
-    <Tab.Screen
-      name="Task"
-      component={Tasks}
-      options={{
-        tabBarLabel: "Tareas",
-        tabBarIcon: ({ color, size }) => (
-          <Icon name="create" color={color} size={size} />
-        ),
-        headerShown: false,
-      }}
-    />
-    <Tab.Screen
-      name="Config"
-      component={Config}
-      options={{
-        tabBarLabel: "Configuración",
-        tabBarIcon: ({ color, size }) => (
-          <Icon name="cog" type="font-awesome" color={color} size={size} />
-        ),
-        headerShown: false,
-      }}
-    />
-  </Tab.Navigator>
-);
 const Routes = () => {
   const { isLogin } = useSelector((root: RootState) => root.auth);
-
   return (
     <NavigationContainer>
       <NativeBaseProvider>

@@ -87,14 +87,20 @@ const Login = () => {
   const ThemeColor = useTheme();
 
   return (
-    <View style={{ backgroundColor: ThemeColor.colors.primary, flex: 1 }}>
-      <Header />
-      <IconButtonR
-        onPress={handleChangeTogle}
-        size={40}
-        color={isDark ? "white" : "black"}
-        icon={isDark ?"weather-sunny":"weather-night"}
-      />
+    <View style={{ backgroundColor: ThemeColor.colors.background, flex: 1 }}>
+      <View style={{flexDirection:'row',}} >
+        <View>
+          <Header />
+        </View>
+        <View style={{flex:1,alignItems:'flex-end'}} >
+        <IconButtonR
+              onPress={handleChangeTogle}
+              size={30}
+              color={isDark ? "#fff" : "#000"}
+              icon={isDark ? "weather-sunny" : "weather-night"}
+            />
+        </View>
+      </View>
       <View style={styles.containercenter}>
         <Text style={styles.containerTitle}>
           <ImageAvatar size={90} avatarUrl={require("../../Images/book.png")} />

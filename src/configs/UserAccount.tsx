@@ -14,9 +14,11 @@ import * as Yup from "yup";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 import ImageAvatar from "../components/Image";
+import { useTheme } from "react-native-paper";
 
 const UserAccount = () => {
   const { user } = useSelector((root: RootState) => root.auth);
+  const { isDark } = useSelector((root: RootState) => root.tasks);
 
   const initialValues = {
     name: user?.name || "",
@@ -92,9 +94,9 @@ const UserAccount = () => {
     enableReinitialize: true,
     onSubmit,
   });
-
+const theme = useTheme() 
   return (
-    <View>
+    <View style={{backgroundColor: theme.colors.background, flex:1}} >
       <HeaderButton />
       <View style={styles.container}>
         <View style={styles.image}>
@@ -111,13 +113,13 @@ const UserAccount = () => {
           />
         </View>
         <View style={styles.containerButton}>
-          <Text style={styles.title}>E-mail</Text>
-          <Text style={styles.datas}>{user?.email}</Text>
+          <Text style={{ paddingHorizontal: 10 , color:theme.colors.primary}}>E-mail</Text>
+          <Text style={{ padding: 10, fontSize: 18, color:theme.colors.secondary}}>{user?.email}</Text>
         </View>
 
         <View style={styles.containerButton}>
-          <Text style={styles.title}>Sexo</Text>
-          <Text style={styles.datas}>{user?.gender}</Text>
+          <Text style={{ paddingHorizontal: 10 , color:theme.colors.primary}}>Sexo</Text>
+          <Text style={{ padding: 10, fontSize: 18, color:theme.colors.secondary}}>{user?.gender}</Text>
         </View>
 
         <View style={styles.containerButton}>
@@ -150,7 +152,7 @@ const UserAccount = () => {
       </View>
       <View style={{ paddingHorizontal: 20 }}>
         <Button
-          buttonStyle={styles.boton}
+          buttonStyle={{ paddingHorizontal: 20, backgroundColor:theme.colors.onSecondary}}
           onPress={() => handleSubmit()}
           title="Actualizar"
         />
@@ -162,11 +164,8 @@ const UserAccount = () => {
 export default UserAccount;
 
 const styles = StyleSheet.create({
-  datas:{ padding: 10, fontSize: 18 },
   image: { alignItems: "center", paddingVertical: 15 },
   containerButton: { paddingHorizontal: 10, paddingBottom:5 },
-  container: {},
-  boton: { paddingHorizontal: 20 },
   disableButton: { backgroundColor: "grey" },
-  title: { paddingHorizontal: 10 },
+ 
 });

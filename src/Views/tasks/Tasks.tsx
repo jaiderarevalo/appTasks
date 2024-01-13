@@ -214,7 +214,7 @@ const Tasks = () => {
           >
             <ButtonR
               onPress={() => {
-                dispatch(statusModal(true));
+                dispatch(statusModal(true)); 
                 dispatch(isEditing(false));
               }}
               icon="pencil-plus"

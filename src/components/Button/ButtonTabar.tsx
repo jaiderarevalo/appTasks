@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import React from "react";
 import { setLogout } from "../../Store/Slice/reducer/auth.slice";
-import { useAppDispatch } from "../../Store/Slice";
+import { RootState, useAppDispatch } from "../../Store/Slice";
 import { RootStackParams } from "../../Types/types";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -10,6 +10,7 @@ import ButtonR from "./Button";
 import IconButtonR from "./ButtonIcon";
 import CardButton from "./CardButton";
 import { useTheme } from "react-native-paper";
+import { useSelector } from "react-redux";
 
 const Config = () => {
   const { navigate } =
@@ -18,6 +19,7 @@ const Config = () => {
   const handleLogout = () => {
     dispatch(setLogout());
   };
+ const {isDark} = useSelector((root:RootState) =>  root.tasks)
  
   const ThemeColor = useTheme();
   return (
@@ -43,8 +45,8 @@ const Config = () => {
           icon1="account-cowboy-hat"
           subtitle="Actualización de Nombre y contraseña"
           title="Cuenta"
-          colorAvatar=""
-          backgroundColor="white"
+          colorAvatar={isDark ? '#fff' : '#000.'}
+          backgroundColor={isDark ? '#000' : '#fff'}
           borderWidth={1}
         />
       </View>
